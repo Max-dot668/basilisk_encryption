@@ -1,5 +1,5 @@
 # Parseltongue mapping dictionary
-BASILISK_DICT = {
+SECRET_KEY = {
     'a': 'haa', 'b': 'ethaa', 'c': 'hass', 'd': 'ssaah',
     'e': 'ssss', 'f': 'hassay', 'g': 'ehhh', 'h': 'seethaaa',
     'i': 'aayaa', 'j': 'sheaaya', 'k': 'ayaahath', 'l': 'hathehh',
@@ -9,16 +9,16 @@ BASILISK_DICT = {
     'y': 'haaaaaah', 'z': 'ssssseettth'
 }
 
-def encrypt(text):
+def encrypt(text, key):
     ...
 
-def decrypt(text):
+def decrypt(text, key):
     ...
 
-def encrypt_file(input_file, output_file):
+def encrypt_file(input_file, output_file, key):
     ...
 
-def decrypt_file(input_file, output_file):
+def decrypt_file(input_file, output_file, key):
     ...
 
 def main():
