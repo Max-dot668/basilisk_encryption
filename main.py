@@ -1,7 +1,7 @@
 import re
 
 # Binary mapping symbols 
-SYMBOLS = { '00': ♠, '01': ♥, '10': ♦, '11': ♣ }
+SYMBOLS = { '0': '♔', '1': '♕' }
 
 # Each letter in the alphabet mapped to a number index
 letter_to_number = { 'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4, 'F': 5, 'G': 6, 'H': 7,
