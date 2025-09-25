@@ -1,75 +1,162 @@
-import re
+# -------------------------
+# Suite-symbol recursive encryption
+# -------------------------
 
-# Binary mapping symbols 
-SYMBOLS = { '0': '♔', '1': '♕' }
+# 2-bit suit tokens
+SUITS = {
+    "00": "♠",
+    "01": "♥",
+    "10": "♦",
+    "11": "♣"
+}
 
-# Each letter in the alphabet mapped to a number index
-letter_to_number = { 'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4, 'F': 5, 'G': 6, 'H': 7,
-                    'I': 8, 'J': 9, 'K': 10, 'L': 11, 'M': 12, 'N': 13, 'O': 14, 'P': 15,
-                    'Q': 16, 'R': 17, 'S': 18, 'T': 19, 'U': 20, 'V': 21, 'W': 22,'X': 23,
-                    'Y': 24, 'Z': 25 }
+# Reverse mapping for decryption
+REVERSE_SUITS = {v: k for k, v in SUITS.items()}
 
 
-# ================================================================================
-# Function implementations
-# ================================================================================
-
-def encrypt(text, key):
-    ...
-
-def decrypt(ciphertext, key):
-    ...
-
-def encrypt_file(input_file, output_file, key):
-    ...
-
-def decrypt_file(input_file, output_file, key):
-    ...
-
-# ================================================================================
+# -------------------------
 # Helper functions
-# ================================================================================
+# -------------------------
 
-def validate_input(key):
-    """
-    Raises ValueError if key contains digits.
-    Only letters and special characters are allowed 
-    """
-    pattern = r'\d' # matches digits
-    if match := re.search(pattern, key):
+def to_binary_8bit(n):
+    """Manual decimal -> 8-bit binary string."""
+    bits = ""
+    while n > 0:
+        bits = str(n % 2) + bits
+        n = n // 2
+    while len(bits) < 8:
+        bits = "0" + bits
+    return bits
+
+
+def encrypt_recursive(text):
+    if text == "":
+        return ""  # base case
+
+    first_char = text[0]
+    ascii_code = ord(first_char)
+    binary = to_binary_8bit(ascii_code)
+
+    if len(binary) % 2 != 0:
+        binary += "0"
+
+    suits = ""
+    i = 0
+    while i < len(binary):
+        chunk = binary[i:i+2]
+        suits += SUITS[chunk]
+        i += 2
+
+    return suits + encrypt_recursive(text[1:])
+
+
+def decrypt_recursive(symbols):
+    if symbols == "":
+        return ""  # base case
+
+    first_four = symbols[:4]  # 4 suits = 8 bits
+    binary = ""
+    for s in first_four:
+        binary += REVERSE_SUITS[s]
+
+    char = chr(int(binary, 2))
+    return char + decrypt_recursive(symbols[4:])
+
+
+def validate_txt_file(filename):
+    """Ensure the file has a .txt extension."""
+    if not filename.lower().endswith(".txt"):
+        print(f"Error: '{filename}' is not a .txt file.")
         return False
     return True
 
-def binary_conversion(n):
-    """
-    Returns a string binary represation of a decimal
-    number through the eucledian algorithm
-    """
-    result = ''
-    while n != 0:
-        result += str(n % 2)
-        n = n // 2
-    return result[::-1]
 
-# ================================================================================
-# Main program 
-# ================================================================================
+# -------------------------
+# File handling
+# -------------------------
+
+def create_text_file():
+    filename = input("Enter the name of the new text file (with .txt): ")
+    if not validate_txt_file(filename):
+        return
+    content = input("Enter the text you want to put in the file:\n")
+    
+    try:
+        with open(filename, "w", encoding="utf-8") as f:
+            f.write(content)
+        print(f"File '{filename}' created successfully!")
+    except Exception as e:
+        print(f"Error creating file: {e}")
+
+
+def encrypt_file(input_file, output_file):
+    if not validate_txt_file(input_file) or not validate_txt_file(output_file):
+        return
+
+    try:
+        with open(input_file, "r", encoding="utf-8") as f:
+            lines = f.readlines()
+    except FileNotFoundError:
+        print(f"Error: {input_file} not found!")
+        return
+
+    try:
+        with open(output_file, "w", encoding="utf-8") as f:
+            for line in lines:
+                f.write(encrypt_recursive(line))
+    except Exception as e:
+        print(f"Error writing to {output_file}: {e}")
+        return
+
+    print(f"File encrypted successfully -> {output_file}")
+
+
+def decrypt_file(input_file, output_file):
+    if not validate_txt_file(input_file) or not validate_txt_file(output_file):
+        return
+
+    try:
+        with open(input_file, "r", encoding="utf-8") as f:
+            lines = f.readlines()
+    except FileNotFoundError:
+        print(f"Error: {input_file} not found!")
+        return
+
+    try:
+        with open(output_file, "w", encoding="utf-8") as f:
+            for line in lines:
+                f.write(decrypt_recursive(line))
+    except Exception as e:
+        print(f"Error writing to {output_file}: {e}")
+        return
+
+    print(f"File decrypted successfully -> {output_file}")
+
+
+# -------------------------
+# Main menu
+# -------------------------
+
 def main():
-    print('Suite Encryption Script')
-    print('(1) Encrypt a file')
-    print('(2) Decrypt a file')
+    print("Suite Encryption Script")
+    print("(1) Create a new text file")
+    print("(2) Encrypt a file")
+    print("(3) Decrypt a file")
 
-    # user choice with input validation
-    while True:
-        try:
-            choice = int(input('Enter choice here: '))
-            if choice in [1, 2]:
-                break
-            else:
-                print('Invalid choice. Please enter 1 or 2')
-        except ValueError:
-            print('Invalid input. Please enter 1 or 2')
+    choice = input("Enter your choice: ")
 
+    if choice == "1":
+        create_text_file()
+    elif choice == "2":
+        input_file = input("Enter the input file name: ")
+        output_file = input("Enter the output file name: ")
+        encrypt_file(input_file, output_file)
+    elif choice == "3":
+        input_file = input("Enter the input file name: ")
+        output_file = input("Enter the output file name: ")
+        decrypt_file(input_file, output_file)
+    else:
+        print("Invalid choice.")
 
 
 if __name__ == "__main__":
