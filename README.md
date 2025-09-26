@@ -1,5 +1,5 @@
 SUITE ENCRYPTION SCRIPT
-by Max You
+by Maximiliano You
 
 This is my project for CPSC 253. It encrypts and decrypts text files using my own algorithm.
 
@@ -15,37 +15,17 @@ The decryption just reverses this process.
 ------------------------------------------------
 PROGRAM FLOW
 ------------------------------------------------
-+------------------+
-|   User runs app  |
-+------------------+
-          |
-          v
-+------------------+
-|   Show menu      |
-|  (1, 2, or 3)    |
-+------------------+
-   |     |      |
-   |     |      |
-   v     v      v
-Create Encrypt Decrypt
- File   File    File
-   |     |      |
-   |     v      v
-   |   Read input file
-   |     |
-   |     v
-   |  Convert text
-   |   -> binary
-   |   -> suits ♠♥♦♣
-   |     |
-   |     v
-   |  Write encrypted file
-   |            |
-   |            v
-   |      Decrypt reverses
-   |        process back
-   v
- Done
+1. User runs the program
+2. Program shows menu:
+   1) Create a new text file
+   2) Encrypt a file
+   3) Decrypt a file
+3. User chooses an option
+4. Program does the selected task:
+   - Create: makes a new .txt file
+   - Encrypt: reads text file, converts to suits, writes encrypted file
+   - Decrypt: reads encrypted file, converts suits back to text, writes decrypted file
+5. Done
 
 ------------------------------------------------
 HOW TO USE
@@ -53,12 +33,7 @@ HOW TO USE
 1. Run the program with:
    python main.py
 
-2. You will see a menu with three options:
-   (1) Create a new text file
-   (2) Encrypt a file
-   (3) Decrypt a file
-
-3. Type the number for what you want to do and follow the prompts.
+2. Follow the menu instructions.
 
 ------------------------------------------------
 EXAMPLE
