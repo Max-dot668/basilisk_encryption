@@ -18,7 +18,7 @@ REVERSE_SUITS = {v: k for k, v in SUITS.items()}
 # Helper functions
 # -------------------------
 
-def to_binary_8bit(n):
+def to_binary(n):
     bits = ""
     while n > 0:
         bits = str(n % 2) + bits
@@ -35,7 +35,7 @@ def encrypt_recursive(text):
 
     first_char = text[0]
     ascii_code = ord(first_char)
-    binary = to_binary_8bit(ascii_code)
+    binary = to_binary(ascii_code)
 
     if len(binary) % 2 != 0:
         binary += "0"
