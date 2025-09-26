@@ -1,8 +1,8 @@
 # -------------------------
-# Suite-symbol recursive encryption
+# Suite Encryption Algorithm
 # -------------------------
 
-# 2-bit suit tokens
+# binary bit suit tokens
 SUITS = {
     "00": "♠",
     "01": "♥",
@@ -19,7 +19,6 @@ REVERSE_SUITS = {v: k for k, v in SUITS.items()}
 # -------------------------
 
 def to_binary_8bit(n):
-    """Manual decimal -> 8-bit binary string."""
     bits = ""
     while n > 0:
         bits = str(n % 2) + bits
@@ -30,8 +29,9 @@ def to_binary_8bit(n):
 
 
 def encrypt_recursive(text):
+    # base case
     if text == "":
-        return ""  # base case
+        return ""  
 
     first_char = text[0]
     ascii_code = ord(first_char)
@@ -39,7 +39,8 @@ def encrypt_recursive(text):
 
     if len(binary) % 2 != 0:
         binary += "0"
-
+        
+    # recursive step
     suits = ""
     i = 0
     while i < len(binary):
@@ -51,10 +52,12 @@ def encrypt_recursive(text):
 
 
 def decrypt_recursive(symbols):
+    # base case
     if symbols == "":
-        return ""  # base case
-
-    first_four = symbols[:4]  # 4 suits = 8 bits
+        return ""  
+    
+    # recursive step
+    first_four = symbols[:4]  
     binary = ""
     for s in first_four:
         binary += REVERSE_SUITS[s]
@@ -64,7 +67,6 @@ def decrypt_recursive(symbols):
 
 
 def validate_txt_file(filename):
-    """Ensure the file has a .txt extension."""
     if not filename.lower().endswith(".txt"):
         print(f"Error: '{filename}' is not a .txt file.")
         return False
