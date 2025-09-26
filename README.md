@@ -1,5 +1,5 @@
-SUITE ENCRYPTION SCRIPT
-by Maximiliano You
+# SUITE ENCRYPTION SCRIPT
+by Max You
 
 This is my project for CPSC 253. It encrypts and decrypts text files using my own algorithm.
 
